@@ -17,7 +17,7 @@ public:
     ~HashTableCell() = default; //todo
     K getKey() const;
     D getData() const;
-    HashTableCell<D, K>* getNext() const;
+    void setData(const D &new_data);
     bool isCellFree() const;
     void deleteCell();
 };
@@ -52,6 +52,11 @@ void HashTableCell<D, K>::deleteCell() {
 template<typename D, typename K>
 bool HashTableCell<D, K>::isCellFree() const {
     return isFree;
+}
+
+template<typename D, typename K>
+void HashTableCell<D, K>::setData(const D &new_data) {
+    data = new_data;
 }
 
 

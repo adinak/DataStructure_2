@@ -22,7 +22,7 @@ struct KeyHash{
 template<typename T, typename K, typename F = KeyHash<K>>
 class HashTable{
 private:
-    HashTableCell<T, K>** dynamic_array;
+    HashTableCell<T, K>** table;
     F hashFunction();
     int size;
     int occupied;
@@ -33,7 +33,7 @@ public:
     ~HashTable();
 
     int getSize() const;
-    T insertNewMember(K key);
+    T insertNewMember(const K &key, const T &data);
     T findMember(K key);
     T deleteMember(K key);
 
@@ -43,34 +43,34 @@ public:
 
 template<typename T, typename K, typename F>
 void HashTable<T, K, F>::expandArray() {
-    auto temp_array = new HashTableCell<T, K>[size * 2];
+    auto temp_table = new HashTableCell<T, K>[size * 2];
     int index;
 
     for (int i = 0; i < size; ++i) {
-        if(!dynamic_array[i]->isCellFree()) {
-            index = hashFunction(dynamic_array[i]->getKey());
-            while(temp_array[index] != nullptr) {
+        if(!table[i]->isCellFree()) {
+            index = hashFunction(table[i]->getKey());
+            while(!temp_table[index]->isCellFree()) {
                 index++;
             }
-            temp_array[index] = dynamic_array[i];
-            dynamic_array[i]->deleteCell();
+            temp_table[index] = table[i];
+            table[i]->deleteCell();
         }
     }
     size = size * 2;
-    delete [] dynamic_array;
-    dynamic_array = temp_array;
+    delete [] table;
+    table = temp_table;
 }
 
 //=================== PUBLIC ===================
 
 template<typename T, typename K,  typename F>
 HashTable<T, K, F>::HashTable() : size(N), occupied(0) {
-    dynamic_array = new HashTableCell<T, K>[N];
+    table = new HashTableCell<T, K> *[N]();
 }
 
 template<typename T, typename K, typename F>
-HashTable<T, K, F>::~HashTable() { //todo
-    delete[] dynamic_array;
+HashTable<T, K, F>::~HashTable() { //todo: add loop delete each cell
+    delete[] table;
 }
 
 template<typename T, typename K, typename F>
@@ -78,20 +78,21 @@ int HashTable<T, K, F>::getSize() const {
     return size;
 }
 
-template<typename T, typename K, typename F>
-T HashTable<T, K, F>::insertNewMember(K key) {
+template<typename T, typename K, typename F> //todo: go over
+T HashTable<T, K, F>::insertNewMember(const K &key, const T &data) {
     if(occupied >= size / 2) {
         expandArray();
     }
     int index = hashFunction(key);
-    HashTableCell<T, K> *current = dynamic_array[index];
-    if(!current->isCellFree()) {
-        while(current->getNext() != nullptr) {
-            current = current->getNext();
-        }
+    HashTableCell<T, K> *current = table[index];
+    while(!current->isCellFree()) {
+        index++;
+        current = table[index];
     }
+    current = new HashTableCell<T, K>(key, data);
+    table[index] = current;
 
-    return nullptr;
+    return current->getData();
 }
 
 #endif //DATASTRUCTURE_2_HASHTABLE_H
