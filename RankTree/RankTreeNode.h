@@ -34,6 +34,13 @@ private:
     int getHeight();
     //Balance factor for Avl tree, Bf = hl-hr
     int getBf();
+    //get number of sons
+    int getNumberOfSons();
+    //increase number of sons by one
+    void incNumberOfSons();
+    //decrease number of sons by one
+    void decNumberOfSons();
+
     RankTreeNode* getRight();
     RankTreeNode* getLeft();
     RankTreeNode* getFather();
@@ -90,6 +97,20 @@ template<class K, class D>
 int RankTreeNode<K, D>::getBf() {
     return (this->hl-this->hr);
 }
+
+template<class K, class D>
+int RankTreeNode<K, D>::getNumberOfSons(){
+    return this->w;
+}
+template<class K, class D>
+void RankTreeNode<K, D>::incNumberOfSons(){
+    this->w++;
+}
+template<class K, class D>
+void RankTreeNode<K, D>::decNumberOfSons(){
+    this->w--;
+}
+
 
 template<class K, class D>
 RankTreeNode<K,D>* RankTreeNode<K,D>::getLeft() {

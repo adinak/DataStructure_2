@@ -2,11 +2,16 @@
 // Created by Aviv9 on 27/04/2020.
 //
 
+/**
+ * TODO: add rank function
+ * TODO: add select function
+ * TODO: test
+ */
+
+
+
 #ifndef AVLTREE_AVLTREE_H
 #define AVLTREE_AVLTREE_H
-
-//TODO: replace with Adina's List
-//using std::list;
 
 #include "RankTreeNode.h"
 #include "list.h"
@@ -29,8 +34,8 @@ private:
     //Number of nodes in the tree
     int num_of_nodes;
     RankTreeNode<K,D>* root;
-    //Pointer to the node with the smallest_node Key
-    RankTreeNode<K,D>* smallest_node;
+    //Pointer to the node with the biggest_node Key
+    RankTreeNode<K,D>* biggest_node;
 
     //Rotating function for inserting or deleting nodes
     AVLTreeResult rotateLL(RankTreeNode<K,D>* B);
@@ -165,14 +170,14 @@ public:
  */
 
 template<class K, class D>
-AVLTree<K, D>::AVLTree():num_of_nodes(0), root(nullptr), smallest_node(nullptr){}
+AVLTree<K, D>::AVLTree():num_of_nodes(0), root(nullptr), biggest_node(nullptr){}
 
 template<class K, class D>
 AVLTree<K, D>::~AVLTree() {
     clearTree(this->root);
     num_of_nodes = 0;
     this->root = nullptr;
-    this->smallest_node = nullptr;
+    this->biggest_node = nullptr;
 }
 
 /* ----------------------------------
@@ -311,7 +316,7 @@ AVLTreeResult AVLTree<K, D>::addNewNode(RankTreeNode<K,D>* new_node) {
     bool new_smallest_node = true;
     if(curr == nullptr){
         this->root = new_node;
-        this->smallest_node = new_node;
+        this->biggest_node = new_node;
         return AVL_SUCCESS;
     }
     while(curr!= nullptr){
@@ -320,16 +325,18 @@ AVLTreeResult AVLTree<K, D>::addNewNode(RankTreeNode<K,D>* new_node) {
             return AVL_KEY_ALREADY_EXISTS;
         }
         else if(key>curr_key){
+            curr->incNumberOfSons();
             if(curr->getRight() == nullptr){
                 curr->setRight(new_node);
                 if(new_smallest_node){
-                    this->smallest_node = new_node;
+                    this->biggest_node = new_node;
                 }
                 break;
             }
             curr = curr->getRight();
         }
         else if(key<curr_key){
+            curr->incNumberOfSons();
             new_smallest_node = false;
             if(curr->getLeft() == nullptr){
                 curr->setLeft(new_node);
@@ -376,9 +383,10 @@ AVLTreeResult AVLTree<K, D>::remove(const K &key) {
     this->num_of_nodes--;
     int son_key;
     if(curr != nullptr){
-        son_key= curr->getKey();
+        son_key = curr->getKey();
     }
     for(; curr != nullptr ;curr=curr->getFather()){
+        curr->decNumberOfSons();
         if(son_key>curr->getKey()){
             curr->hr = curr->getRight()->getHeight();
         }
@@ -467,7 +475,7 @@ template<class K, class D>
 RankTreeNode<K, D> * AVLTree<K, D>::deleteNode(RankTreeNode<K, D> *node_to_delete) {
     RankTreeNode<K,D>* dead;
     RankTreeNode<K,D>* father = node_to_delete->getFather();
-    bool biggest = (this->smallest_node->getKey() == node_to_delete->getKey());
+    bool biggest = (this->biggest_node->getKey() == node_to_delete->getKey());
     if (node_to_delete->getLeft() != nullptr &&
                                         node_to_delete->getRight() == nullptr) {
         dead = node_to_delete;
@@ -479,9 +487,9 @@ RankTreeNode<K, D> * AVLTree<K, D>::deleteNode(RankTreeNode<K, D> *node_to_delet
             father->setSon(node_to_delete->getLeft());
         }
         if(biggest){
-            this->smallest_node = this->smallest_node->getLeft();
-            while(this->smallest_node->getRight() != nullptr) {
-                this->smallest_node = this->smallest_node->getRight();
+            this->biggest_node = this->biggest_node->getLeft();
+            while(this->biggest_node->getRight() != nullptr) {
+                this->biggest_node = this->biggest_node->getRight();
             }
         }
         delete dead;
@@ -514,7 +522,7 @@ RankTreeNode<K, D> * AVLTree<K, D>::deleteNode(RankTreeNode<K, D> *node_to_delet
             father->setLeft(nullptr);
         }
         if(biggest){
-            this->smallest_node = father;
+            this->biggest_node = father;
         }
         delete dead;
         return father;
@@ -692,7 +700,7 @@ void AVLTree<K, D>::clear() {
     clearTree(this->root);
     num_of_nodes = 0;
     this->root = nullptr;
-    this->smallest_node = nullptr;
+    this->biggest_node = nullptr;
     return;
 }
 
