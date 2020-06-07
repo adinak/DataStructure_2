@@ -17,9 +17,9 @@
 #include "list.h"
 
 
-typedef enum {AVL_SUCCESS, AVL_KEY_ALREADY_EXISTS, AVL_KEY_NOT_EXISTS,
-                                        BALANCED, NOT_BALANCED} AVLTreeResult;
-typedef enum {PRE, IN, POST} AVLTreeOrderType;
+typedef enum {RANK_TREE_SUCCESS, RANK_TREE_KEY_ALREADY_EXISTS, RANK_TREE_KEY_NOT_EXISTS,
+                                        BALANCED, NOT_BALANCED} RankTreeResult;
+typedef enum {PRE, IN, POST} RankTreeOrderType;
 
 /**
  * Creating and operating AVL Tree, as learnt at the lectures.
@@ -28,8 +28,9 @@ typedef enum {PRE, IN, POST} AVLTreeOrderType;
  * @tparam K Datatype of node KEY
  * @tparam D Datatype of node DATA
  */
+
 template<class K, class D>
-class AVLTree{
+class RankTree{
 private:
     //Number of nodes in the tree
     int num_of_nodes;
@@ -38,32 +39,32 @@ private:
     RankTreeNode<K,D>* biggest_node;
 
     //Rotating function for inserting or deleting nodes
-    AVLTreeResult rotateLL(RankTreeNode<K,D>* B);
-    AVLTreeResult rotateLR(RankTreeNode<K,D>* C);
-    AVLTreeResult rotateRR(RankTreeNode<K,D>* B);
-    AVLTreeResult rotateRL(RankTreeNode<K,D>* C);
+    RankTreeResult rotateLL(RankTreeNode<K,D>* B);
+    RankTreeResult rotateLR(RankTreeNode<K,D>* C);
+    RankTreeResult rotateRR(RankTreeNode<K,D>* B);
+    RankTreeResult rotateRL(RankTreeNode<K,D>* C);
 
     //Add new_node to the tree
-    AVLTreeResult addNewNode(RankTreeNode<K,D>* new_node);
+    RankTreeResult addNewNode(RankTreeNode<K,D>* new_node);
     //Balance single tree node
-    AVLTreeResult balanceNode(RankTreeNode<K,D>* curr);
+    RankTreeResult balanceNode(RankTreeNode<K,D>* curr);
 
     //Transferring the tree nodes data to lists according to specific order
-    AVLTreeResult getPreOrder(RankTreeNode<K,D>* root_node, List<D> *ordered_list);
-    AVLTreeResult getPreOrder(RankTreeNode<K,D>* root_node, List<D> *ordered_list,
+    RankTreeResult getPreOrder(RankTreeNode<K,D>* root_node, List<D> *ordered_list);
+    RankTreeResult getPreOrder(RankTreeNode<K,D>* root_node, List<D> *ordered_list,
+                               int& n);
+
+    RankTreeResult getInOrder(RankTreeNode<K, D> *root_node, List<D> *ordered_list);
+    RankTreeResult getInOrder(RankTreeNode<K, D> *root_node, List<D> *ordered_list,
                               int& n);
 
-    AVLTreeResult getInOrder(RankTreeNode<K, D> *root_node, List<D> *ordered_list);
-    AVLTreeResult getInOrder(RankTreeNode<K, D> *root_node, List<D> *ordered_list,
-                             int& n);
-
-    AVLTreeResult getPostOrder(RankTreeNode<K, D> *root_node,
-                               List<D> *ordered_list);
-    AVLTreeResult getPostOrder(RankTreeNode<K, D> *root_node,
-                               List<D> *ordered_list, int& n);
+    RankTreeResult getPostOrder(RankTreeNode<K, D> *root_node,
+                                List<D> *ordered_list);
+    RankTreeResult getPostOrder(RankTreeNode<K, D> *root_node,
+                                List<D> *ordered_list, int& n);
 
     //Swap two nodes position, used for deleting nodes
-    AVLTreeResult swapNodes(RankTreeNode<K,D>* a, RankTreeNode<K,D>* b);
+    RankTreeResult swapNodes(RankTreeNode<K,D>* a, RankTreeNode<K,D>* b);
     //Deleting node from the tree
     RankTreeNode<K, D> * deleteNode(RankTreeNode<K, D> *node_to_delete);
     //Deleting node with two children required special handling therefore
@@ -81,13 +82,21 @@ private:
      *
      */
     template<typename Function, typename S>
-    AVLTreeResult iterateAndDoInOrder(RankTreeNode<K, D> *node, Function
+    RankTreeResult iterateAndDoInOrder(RankTreeNode<K, D> *node, Function
         doSomething, List<S>* lst , int &n);
 
+    int findRankReq(RankTreeNode<K,D>* curr, K key);
+
+    K selectReq(RankTreeNode<K,D>* curr, int rank);
+
+
+    //TODO: delete when done testing
+    template <class KEY,class DATA>
+    friend class RankTree;
 public:
     // C'tors and D'tors
-    AVLTree();
-    ~AVLTree();
+    RankTree();
+    ~RankTree();
 
     //return the num of nodes in the tree
     int getSize();
@@ -97,16 +106,16 @@ public:
      * Adds new item to the tree, while keeping it balanced
      * @param key Identifier of new item
      * @param data Data of new item
-     * @return AVL_SUCCESS / AVL_KEY_ALREADY_EXISTS
+     * @return RANK_TREE_SUCCESS / RANK_TREE_KEY_ALREADY_EXISTS
      */
-    AVLTreeResult insert(K& key, D& data);
+    RankTreeResult insert(K& key, D& data);
 
     /**
      * Removes an item from the tree, while keeping it balanced
      * @param key Identifier of removed item
-     * @return AVL_SUCCESS / AVL_KEY_NOT_EXISTS
+     * @return RANK_TREE_SUCCESS / RANK_TREE_KEY_NOT_EXISTS
      */
-    AVLTreeResult remove(const K& key);
+    RankTreeResult remove(const K& key);
 
     /**
      * Searches after a specific item, identifies by key, and returns a pointer
@@ -122,7 +131,7 @@ public:
      * method
      * @param type Search method (PRE, IN, POST)
      */
-    void printAVLTree(AVLTreeOrderType type);
+    void printAVLTree(RankTreeOrderType type);
 
     // Data Accessing
     /**
@@ -132,9 +141,9 @@ public:
      * @param optional param that indicate the number of nodes to store in the
      *        list
      */
-    AVLTreeResult getTreeToList(AVLTreeOrderType type, List<D> *ordered_list);
-    AVLTreeResult getTreeToList(AVLTreeOrderType type, List<D> *ordered_list,
-                                                                        int& n);
+    RankTreeResult getTreeToList(RankTreeOrderType type, List<D> *ordered_list);
+    RankTreeResult getTreeToList(RankTreeOrderType type, List<D> *ordered_list,
+                                 int& n);
 
     /**
      * Iterate over n of the tree nodes in in-order and use doSomething function
@@ -148,10 +157,15 @@ public:
      *        @param lst - list to store inner structs, can be nullptr if not
      *                     used
      * @param number of nodes/ actions to made
-     * @return AVL_SUCCESS
+     * @return RANK_TREE_SUCCESS
      */
     template<typename Function, typename S>
-    AVLTreeResult doSomethingInOrder(Function doSomething, int &n, List<S>*lst);
+    RankTreeResult doSomethingInOrder(Function doSomething, int &n, List<S>*lst);
+
+    int rank(K key);
+
+    K select(int i);
+
 
     /**
      * Delete all the nodes from the tree and set Private variable to nullptr
@@ -170,10 +184,10 @@ public:
  */
 
 template<class K, class D>
-AVLTree<K, D>::AVLTree():num_of_nodes(0), root(nullptr), biggest_node(nullptr){}
+RankTree<K, D>::RankTree():num_of_nodes(0), root(nullptr), biggest_node(nullptr){}
 
 template<class K, class D>
-AVLTree<K, D>::~AVLTree() {
+RankTree<K, D>::~RankTree() {
     clearTree(this->root);
     num_of_nodes = 0;
     this->root = nullptr;
@@ -186,7 +200,7 @@ AVLTree<K, D>::~AVLTree() {
  */
 
 template<class K, class D>
-int AVLTree<K, D>::getSize() {
+int RankTree<K, D>::getSize() {
     return this->num_of_nodes;
 }
 
@@ -196,15 +210,15 @@ int AVLTree<K, D>::getSize() {
  */
 
 template<class K, class D>
-AVLTreeResult AVLTree<K,D>::insert(K& key, D& data){
+RankTreeResult RankTree<K,D>::insert(K& key, D& data){
     RankTreeNode<K,D>* new_node = new RankTreeNode<K,D>(key, data);
-    AVLTreeResult add_result = addNewNode(new_node);//Adds the node to the tree
-    if(add_result != AVL_SUCCESS){//Something went wrong
+    RankTreeResult add_result = addNewNode(new_node);//Adds the node to the tree
+    if(add_result != RANK_TREE_SUCCESS){//Something went wrong
         delete new_node;
         return add_result;
     }
     this->num_of_nodes++;
-    AVLTreeResult balance_result = NOT_BALANCED;
+    RankTreeResult balance_result = NOT_BALANCED;
     RankTreeNode<K,D>* curr = new_node;
     int son_key = curr->getKey();
     //Checking the BF of each node in the route to the root, updating heights
@@ -222,19 +236,30 @@ AVLTreeResult AVLTree<K,D>::insert(K& key, D& data){
         }
         son_key = curr->getKey();
     }
-    return AVL_SUCCESS;
+    return RANK_TREE_SUCCESS;
 }
 
 /**Rotation Functios**/
 
 template<class K, class D>
-AVLTreeResult AVLTree<K,D>::rotateLL(RankTreeNode<K, D>* B) {
+RankTreeResult RankTree<K,D>::rotateLL(RankTreeNode<K, D>* B) {
     //B is the unbalanced node with BF>1
     RankTreeNode<K,D>* A = B->getLeft();
     RankTreeNode<K,D>* father = B->getFather();
 
     B->setLeft(A->getRight());
     A->setRight(B);
+
+    //fix number of sons
+    int new_w = 1;
+    if(B->getRight()!= nullptr){
+        new_w+= B->getRight()->getNumberOfSons();
+    }
+    if(B->getLeft() != nullptr){
+        new_w+= B->getLeft()->getNumberOfSons();
+    }
+    B->setNumberOfSons(new_w);
+    A->setNumberOfSons(new_w + A->getLeft()->getNumberOfSons()+1);
     if(father == nullptr){//that means B is the root
         A->father = nullptr;
         this->root = A;
@@ -242,11 +267,11 @@ AVLTreeResult AVLTree<K,D>::rotateLL(RankTreeNode<K, D>* B) {
     else {
         father->setSon(A);
     }
-    return AVL_SUCCESS;
+    return RANK_TREE_SUCCESS;
 }
 
 template<class K, class D>
-AVLTreeResult AVLTree<K,D>::rotateLR(RankTreeNode<K, D>* C) {
+RankTreeResult RankTree<K,D>::rotateLR(RankTreeNode<K, D>* C) {
     //C is the unbalanced node with BF>1
     RankTreeNode<K,D>* B = C->getLeft();
     //B has BF=1 therefore he has a right son
@@ -257,6 +282,26 @@ AVLTreeResult AVLTree<K,D>::rotateLR(RankTreeNode<K, D>* C) {
     A->setLeft(B);
     C->setLeft(A->getRight());
     A->setRight(C);
+
+    //fix number of sons
+    int new_w = 1;
+    if(B->getRight()!= nullptr){
+        new_w+= B->getRight()->getNumberOfSons();
+    }
+    if(B->getLeft() != nullptr){
+        new_w+= B->getLeft()->getNumberOfSons();
+    }
+    B->setNumberOfSons(new_w);
+
+    new_w = 1;
+    if(C->getRight()!= nullptr){
+        new_w+= C->getRight()->getNumberOfSons();
+    }
+    if(C->getLeft() != nullptr){
+        new_w+= C->getLeft()->getNumberOfSons();
+    }
+    C->setNumberOfSons(new_w);
+    A->setNumberOfSons(B->getNumberOfSons() + C->getNumberOfSons()+1);
     if(father == nullptr){//that means C is the root
         A->father = nullptr;
         this->root = A;
@@ -264,17 +309,29 @@ AVLTreeResult AVLTree<K,D>::rotateLR(RankTreeNode<K, D>* C) {
     else {
         father->setSon(A);
     }
-    return AVL_SUCCESS;
+    return RANK_TREE_SUCCESS;
 }
 
 template<class K, class D>
-AVLTreeResult AVLTree<K, D>::rotateRR(RankTreeNode<K, D> *B) {
+RankTreeResult RankTree<K, D>::rotateRR(RankTreeNode<K, D> *B) {
     //B is the unbalanced node with BF<-1
     RankTreeNode<K,D>* A = B->getRight();
     RankTreeNode<K,D>* father = B->getFather();
 
     B->setRight(A->getLeft());
     A->setLeft(B);
+
+    //fix number of sons
+    int new_w = 1;
+    if(B->getRight()!= nullptr){
+        new_w+= B->getRight()->getNumberOfSons();
+    }
+    if(B->getLeft() != nullptr){
+        new_w+= B->getLeft()->getNumberOfSons();
+    }
+    B->setNumberOfSons(new_w);
+    A->setNumberOfSons(new_w + A->getRight()->getNumberOfSons()+1);
+
     if(father == nullptr){//that means B is the root
         A->father = nullptr;
         this->root = A;
@@ -282,11 +339,11 @@ AVLTreeResult AVLTree<K, D>::rotateRR(RankTreeNode<K, D> *B) {
     else {
         father->setSon(A);
     }
-    return AVL_SUCCESS;
+    return RANK_TREE_SUCCESS;
 }
 
 template<class K, class D>
-AVLTreeResult AVLTree<K,D>::rotateRL(RankTreeNode<K, D>* C) {
+RankTreeResult RankTree<K,D>::rotateRL(RankTreeNode<K, D>* C) {
     //C is the unbalanced node with BF<-1
     RankTreeNode<K,D>* B = C->getRight();
     //B has BF=1 therefore he has a right son
@@ -297,6 +354,26 @@ AVLTreeResult AVLTree<K,D>::rotateRL(RankTreeNode<K, D>* C) {
     A->setRight(B);
     C->setRight(A->getLeft());
     A->setLeft(C);
+    //fix number of sons
+    int new_w = 1;
+    if(B->getRight()!= nullptr){
+        new_w+= B->getRight()->getNumberOfSons();
+    }
+    if(B->getLeft() != nullptr){
+        new_w+= B->getLeft()->getNumberOfSons();
+    }
+    B->setNumberOfSons(new_w);
+
+    new_w = 1;
+    if(C->getRight()!= nullptr){
+        new_w+= C->getRight()->getNumberOfSons();
+    }
+    if(C->getLeft() != nullptr){
+        new_w+= C->getLeft()->getNumberOfSons();
+    }
+    C->setNumberOfSons(new_w);
+    A->setNumberOfSons(B->getNumberOfSons() + C->getNumberOfSons()+1);
+
     if(father == nullptr){//that means C is the root
         A->father = nullptr;
         this->root = A;
@@ -304,31 +381,31 @@ AVLTreeResult AVLTree<K,D>::rotateRL(RankTreeNode<K, D>* C) {
     else {
         father->setSon(A);
     }
-    return AVL_SUCCESS;
+    return RANK_TREE_SUCCESS;
 }
 
 /**Adding Node Function**/
 
 template<class K, class D>
-AVLTreeResult AVLTree<K, D>::addNewNode(RankTreeNode<K,D>* new_node) {
+RankTreeResult RankTree<K, D>::addNewNode(RankTreeNode<K,D>* new_node) {
     K key = new_node->getKey();
     RankTreeNode<K,D>* curr = this->root;
-    bool new_smallest_node = true;
+    bool new_biggest_node = true;
     if(curr == nullptr){
         this->root = new_node;
         this->biggest_node = new_node;
-        return AVL_SUCCESS;
+        return RANK_TREE_SUCCESS;
     }
     while(curr!= nullptr){
         int curr_key = curr->getKey();
         if(curr_key==key) {
-            return AVL_KEY_ALREADY_EXISTS;
+            return RANK_TREE_KEY_ALREADY_EXISTS;
         }
         else if(key>curr_key){
             curr->incNumberOfSons();
             if(curr->getRight() == nullptr){
                 curr->setRight(new_node);
-                if(new_smallest_node){
+                if(new_biggest_node){
                     this->biggest_node = new_node;
                 }
                 break;
@@ -337,7 +414,7 @@ AVLTreeResult AVLTree<K, D>::addNewNode(RankTreeNode<K,D>* new_node) {
         }
         else if(key<curr_key){
             curr->incNumberOfSons();
-            new_smallest_node = false;
+            new_biggest_node = false;
             if(curr->getLeft() == nullptr){
                 curr->setLeft(new_node);
                 break;
@@ -345,27 +422,27 @@ AVLTreeResult AVLTree<K, D>::addNewNode(RankTreeNode<K,D>* new_node) {
             curr = curr->getLeft();
         }
     }
-    return AVL_SUCCESS;
+    return RANK_TREE_SUCCESS;
 }
 
 /** Balance Node Function **/
 
 template<class K, class D>
-AVLTreeResult AVLTree<K, D>::balanceNode(RankTreeNode<K, D> *curr) {
+RankTreeResult RankTree<K, D>::balanceNode(RankTreeNode<K, D> *curr) {
     if(curr->getBf()==2){
         if(curr->getLeft()->getBf() >= 0){
-            if(rotateLL(curr) == AVL_SUCCESS) return BALANCED;
+            if(rotateLL(curr) == RANK_TREE_SUCCESS) return BALANCED;
         }
         if(curr->getLeft()->getBf() == -1){
-            if(rotateLR(curr) == AVL_SUCCESS) return BALANCED;
+            if(rotateLR(curr) == RANK_TREE_SUCCESS) return BALANCED;
         }
     }
     if(curr->getBf()==-2){
         if(curr->getRight()->getBf() <= 0){
-            if(rotateRR(curr) == AVL_SUCCESS) return BALANCED;
+            if(rotateRR(curr) == RANK_TREE_SUCCESS) return BALANCED;
         }
         if(curr->getRight()->getBf() == 1){
-            if(rotateRL(curr) == AVL_SUCCESS) return BALANCED;
+            if(rotateRL(curr) == RANK_TREE_SUCCESS) return BALANCED;
         }
     }
     return NOT_BALANCED;
@@ -374,10 +451,10 @@ AVLTreeResult AVLTree<K, D>::balanceNode(RankTreeNode<K, D> *curr) {
 /** Remove main Function **/
 
 template<class K, class D>
-AVLTreeResult AVLTree<K, D>::remove(const K &key) {
+RankTreeResult RankTree<K, D>::remove(const K &key) {
     RankTreeNode<K,D>* node_to_delete = findNode(key);
     if(node_to_delete== nullptr){
-        return AVL_KEY_NOT_EXISTS;
+        return RANK_TREE_KEY_NOT_EXISTS;
     }
     RankTreeNode<K,D>* curr = deleteNode(node_to_delete);
     this->num_of_nodes--;
@@ -393,15 +470,17 @@ AVLTreeResult AVLTree<K, D>::remove(const K &key) {
         else if(son_key<curr->getKey()){
             curr->hl = curr->getLeft()->getHeight();
         }
-        balanceNode(curr);
+        if(balanceNode(curr) == BALANCED){
+            curr = curr->getFather();
+        }
         son_key = curr->getKey();
     }
-    return AVL_SUCCESS;
+    return RANK_TREE_SUCCESS;
 }
 
 /** Swap Two Nodes **/
 template<class K, class D>
-AVLTreeResult AVLTree<K, D>::swapNodes(RankTreeNode<K, D>* a, RankTreeNode<K, D>* b) {
+RankTreeResult RankTree<K, D>::swapNodes(RankTreeNode<K, D>* a, RankTreeNode<K, D>* b) {
     if(b->getHeight()>a->getHeight()){
         RankTreeNode<K,D>* tmp = a;
         a=b;
@@ -467,12 +546,15 @@ AVLTreeResult AVLTree<K, D>::swapNodes(RankTreeNode<K, D>* a, RankTreeNode<K, D>
             b_father->setRight(a);
         }
     }
-    return AVL_SUCCESS;
+    int tmp = a->getNumberOfSons();
+    a->setNumberOfSons(b->getNumberOfSons());
+    b->setNumberOfSons(tmp);
+    return RANK_TREE_SUCCESS;
 }
 
 /** Delete Node **/
 template<class K, class D>
-RankTreeNode<K, D> * AVLTree<K, D>::deleteNode(RankTreeNode<K, D> *node_to_delete) {
+RankTreeNode<K, D> * RankTree<K, D>::deleteNode(RankTreeNode<K, D> *node_to_delete) {
     RankTreeNode<K,D>* dead;
     RankTreeNode<K,D>* father = node_to_delete->getFather();
     bool biggest = (this->biggest_node->getKey() == node_to_delete->getKey());
@@ -534,7 +616,7 @@ RankTreeNode<K, D> * AVLTree<K, D>::deleteNode(RankTreeNode<K, D> *node_to_delet
 
 /** Delete Node With Two Children **/
 template<class K, class D>
-RankTreeNode<K, D> * AVLTree<K, D>::deleteNodeWithTwoChildren(
+RankTreeNode<K, D> * RankTree<K, D>::deleteNodeWithTwoChildren(
         RankTreeNode<K, D> *node_to_delete) {
     RankTreeNode<K,D>* curr = node_to_delete;
     curr = curr->getRight();
@@ -551,7 +633,7 @@ RankTreeNode<K, D> * AVLTree<K, D>::deleteNodeWithTwoChildren(
 
 /** Print Function **/
 template<class K, class D>
-void AVLTree<K, D>::printAVLTree(AVLTreeOrderType type) {
+void RankTree<K, D>::printAVLTree(RankTreeOrderType type) {
     List<D> ordered_list;
     getTreeToList(type, &ordered_list);
     std::cout<<ordered_list<<std::endl;
@@ -562,7 +644,7 @@ void AVLTree<K, D>::printAVLTree(AVLTreeOrderType type) {
  * ----------------------------------
  */
 template<class K, class D>
-AVLTreeResult AVLTree<K, D>::getTreeToList(AVLTreeOrderType type, List<D> *ordered_list) {
+RankTreeResult RankTree<K, D>::getTreeToList(RankTreeOrderType type, List<D> *ordered_list) {
     switch(type){
         case PRE:
             getPreOrder(this->root, ordered_list);
@@ -574,11 +656,11 @@ AVLTreeResult AVLTree<K, D>::getTreeToList(AVLTreeOrderType type, List<D> *order
             getPostOrder(this->root, ordered_list);
             break;
     }
-    return AVL_SUCCESS;
+    return RANK_TREE_SUCCESS;
 }
 
 template<class K, class D>
-AVLTreeResult AVLTree<K, D>::getTreeToList(AVLTreeOrderType type, List<D> *ordered_list, int &n) {
+RankTreeResult RankTree<K, D>::getTreeToList(RankTreeOrderType type, List<D> *ordered_list, int &n) {
     switch(type){
         case PRE:
             getPreOrder(this->root, ordered_list, n);
@@ -590,72 +672,72 @@ AVLTreeResult AVLTree<K, D>::getTreeToList(AVLTreeOrderType type, List<D> *order
             getPostOrder(this->root, ordered_list, n);
             break;
     }
-    return AVL_SUCCESS;
+    return RANK_TREE_SUCCESS;
 }
 
 /** Recursive Order Functions **/
 
 template<class K, class D>
-AVLTreeResult AVLTree<K, D>::getPreOrder(RankTreeNode<K, D> *root_node,
-                                         List <D> *ordered_list) {
-    if(root_node == nullptr) return AVL_SUCCESS;
+RankTreeResult RankTree<K, D>::getPreOrder(RankTreeNode<K, D> *root_node,
+                                           List <D> *ordered_list) {
+    if(root_node == nullptr) return RANK_TREE_SUCCESS;
     ordered_list->pushLast(root_node->getData());
     getPreOrder(root_node->getLeft(),ordered_list);
     getPreOrder(root_node->getRight(),ordered_list);
-    return AVL_SUCCESS;
+    return RANK_TREE_SUCCESS;
 }
 
 template<class K, class D>
-AVLTreeResult AVLTree<K, D>::getInOrder(RankTreeNode<K, D> *root_node,
-                                        List<D> *ordered_list) {
-    if(root_node == nullptr) return AVL_SUCCESS;
+RankTreeResult RankTree<K, D>::getInOrder(RankTreeNode<K, D> *root_node,
+                                          List<D> *ordered_list) {
+    if(root_node == nullptr) return RANK_TREE_SUCCESS;
     getInOrder(root_node->getLeft(),ordered_list);
     ordered_list->pushLast(root_node->getData());
     getInOrder(root_node->getRight(),ordered_list);
-    return AVL_SUCCESS;
+    return RANK_TREE_SUCCESS;
 }
 
 template<class K, class D>
-AVLTreeResult AVLTree<K, D>::getPostOrder(RankTreeNode<K, D> *root_node,
-                                          List<D> *ordered_list) {
-    if(root_node == nullptr) return AVL_SUCCESS;
+RankTreeResult RankTree<K, D>::getPostOrder(RankTreeNode<K, D> *root_node,
+                                            List<D> *ordered_list) {
+    if(root_node == nullptr) return RANK_TREE_SUCCESS;
     getPostOrder(root_node->getLeft(),ordered_list);
     getPostOrder(root_node->getRight(),ordered_list);
     ordered_list->pushLast(root_node->getData());
-    return AVL_SUCCESS;
+    return RANK_TREE_SUCCESS;
 }
 
 
 template<class K, class D>
-AVLTreeResult AVLTree<K, D>::getPreOrder(RankTreeNode<K, D> *root_node, List<D> *ordered_list, int &n) {
-    if(root_node == nullptr || n == 0) return AVL_SUCCESS;
+RankTreeResult RankTree<K, D>::getPreOrder(RankTreeNode<K, D> *root_node, List<D> *ordered_list, int &n) {
+    if(root_node == nullptr || n == 0) return RANK_TREE_SUCCESS;
     ordered_list->pushLast(root_node->getData());
     n--;
     getPreOrder(root_node->getLeft(), ordered_list, n);
     getPreOrder(root_node->getRight(), ordered_list, n);
-    return AVL_SUCCESS;
+    return RANK_TREE_SUCCESS;
 }
 
 template<class K, class D>
-AVLTreeResult AVLTree<K, D>::getInOrder(RankTreeNode<K, D> *root_node, List<D> *ordered_list, int &n) {
-    if(root_node == nullptr || n == 0) return AVL_SUCCESS;
+RankTreeResult RankTree<K, D>::getInOrder(RankTreeNode<K, D> *root_node, List<D> *ordered_list, int &n) {
+    if(root_node == nullptr || n == 0) return RANK_TREE_SUCCESS;
     getInOrder(root_node->getLeft(), ordered_list, n);
-    if(n == 0) return AVL_SUCCESS;
+    if(n == 0) return RANK_TREE_SUCCESS;
     ordered_list->pushLast(root_node->getData());
     n--;
     getInOrder(root_node->getRight(), ordered_list, n);
-    return AVL_SUCCESS;
+    return RANK_TREE_SUCCESS;
 }
 
 template<class K, class D>
-AVLTreeResult AVLTree<K, D>::getPostOrder(RankTreeNode<K, D> *root_node, List<D> *ordered_list, int &n) {
-    if(root_node == nullptr || n == 0) return AVL_SUCCESS;
+RankTreeResult RankTree<K, D>::getPostOrder(RankTreeNode<K, D> *root_node, List<D> *ordered_list, int &n) {
+    if(root_node == nullptr || n == 0) return RANK_TREE_SUCCESS;
     getPostOrder(root_node->getLeft(), ordered_list, n);
     getPostOrder(root_node->getRight(), ordered_list, n);
-    if(n == 0) return AVL_SUCCESS;
+    if(n == 0) return RANK_TREE_SUCCESS;
     ordered_list->pushLast(root_node->getData());
     n--;
-    return AVL_SUCCESS;
+    return RANK_TREE_SUCCESS;
 }
 
 /* ----------------------------------
@@ -664,7 +746,7 @@ AVLTreeResult AVLTree<K, D>::getPostOrder(RankTreeNode<K, D> *root_node, List<D>
  */
 
 template<class K, class D>
-D* AVLTree<K, D>::find(const K &key) {
+D* RankTree<K, D>::find(const K &key) {
     RankTreeNode<K,D>* node_to_find = findNode(key);
     if(node_to_find == nullptr){
         return nullptr;
@@ -673,7 +755,7 @@ D* AVLTree<K, D>::find(const K &key) {
 }
 
 template<class K, class D>
-RankTreeNode<K, D>* AVLTree<K, D>::findNode(const K &key) {
+RankTreeNode<K, D>* RankTree<K, D>::findNode(const K &key) {
     RankTreeNode<K,D>* curr = root;
     while(curr != nullptr){
         K curr_key = curr->getKey();
@@ -696,7 +778,7 @@ RankTreeNode<K, D>* AVLTree<K, D>::findNode(const K &key) {
  */
 
 template<class K, class D>
-void AVLTree<K, D>::clear() {
+void RankTree<K, D>::clear() {
     clearTree(this->root);
     num_of_nodes = 0;
     this->root = nullptr;
@@ -705,7 +787,7 @@ void AVLTree<K, D>::clear() {
 }
 
 template<class K, class D>
-void AVLTree<K, D>::clearTree(RankTreeNode<K, D> *root_node) {
+void RankTree<K, D>::clearTree(RankTreeNode<K, D> *root_node) {
     if(root_node == nullptr) return;
     clearTree(root_node->getLeft());
     clearTree(root_node->getRight());
@@ -719,21 +801,77 @@ void AVLTree<K, D>::clearTree(RankTreeNode<K, D> *root_node) {
 
 template<class K, class D>
 template<typename Function, typename S>
-AVLTreeResult AVLTree<K, D>::doSomethingInOrder(Function doSomething, int &n,
- List<S>* lst ) {
+RankTreeResult RankTree<K, D>::doSomethingInOrder(Function doSomething, int &n,
+                                                  List<S>* lst ) {
     return iterateAndDoInOrder(this->root, doSomething, lst, n);
 }
 
 template<class K, class D>
 template<typename Function, typename S>
-AVLTreeResult AVLTree<K, D>::iterateAndDoInOrder(RankTreeNode<K, D> *node,
-                                                 Function doSomething, List<S>* lst, int &n) {
-    if(node == nullptr || n == 0) return AVL_SUCCESS;
+RankTreeResult RankTree<K, D>::iterateAndDoInOrder(RankTreeNode<K, D> *node,
+                                                   Function doSomething, List<S>* lst, int &n) {
+    if(node == nullptr || n == 0) return RANK_TREE_SUCCESS;
     iterateAndDoInOrder(node->getLeft(), doSomething, lst, n);
-    if(n == 0) return AVL_SUCCESS;
+    if(n == 0) return RANK_TREE_SUCCESS;
     doSomething(node->getData(), n, lst);
     iterateAndDoInOrder(node->getRight(), doSomething, lst, n);
-    return AVL_SUCCESS;
+    return RANK_TREE_SUCCESS;
+}
+
+template<class K, class D>
+int RankTree<K, D>::rank(K key) {
+    if(this->find(key) == nullptr){
+        return -1;
+    }
+    RankTreeNode<K,D>* curr = root;
+    int rank = 0;
+    int left_w;
+    while(curr != nullptr){
+        left_w = 0;
+        K curr_key = curr->getKey();
+        if(curr->getLeft()) {
+            left_w = curr->getLeft()->getNumberOfSons();
+        }
+        if(curr_key == key){
+            return rank+left_w+1;
+        }
+        else if(key<curr_key){
+            curr = curr->getLeft();
+        }
+        else if(key>curr_key){
+            rank += left_w+1;
+            curr = curr->getRight();
+        }
+    }
+    return rank;
+}
+
+template<class K, class D>
+K RankTree<K, D>::select(int i) {
+    if(i<=0 || i>this->num_of_nodes){
+        K tmp;
+        return tmp;
+    }
+    RankTreeNode<K,D>* curr = root;
+    int index = i;
+    int left_w;
+    while(curr != nullptr){
+        left_w = 0;
+        if(curr->getLeft()) {
+            left_w = curr->getLeft()->getNumberOfSons();
+        }
+        if(left_w == index-1){
+            return curr->getKey();
+        }
+        else if(left_w > index-1){
+            curr = curr->getLeft();
+        }
+        else if(left_w < index-1){
+            index-= left_w+1;
+            curr = curr->getRight();
+        }
+    }
+    return curr->getKey();
 }
 
 
