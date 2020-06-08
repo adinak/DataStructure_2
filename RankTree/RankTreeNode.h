@@ -34,6 +34,16 @@ private:
     int getHeight();
     //Balance factor for Avl tree, Bf = hl-hr
     int getBf();
+    //get number of sons
+    int getNumberOfSons();
+    //increase number of sons by one
+    void incNumberOfSons();
+    //decrease number of sons by one
+    void decNumberOfSons();
+
+    void setNumberOfSons(int new_w);
+
+
     RankTreeNode* getRight();
     RankTreeNode* getLeft();
     RankTreeNode* getFather();
@@ -43,21 +53,21 @@ private:
     void setSon(RankTreeNode<K,D>* next);
 
     template <class KEY,class DATA>
-    friend class AVLTree;
+    friend class RankTree;
 
 public:
     /**
      * default RankTreeNode constructor, uses D and K default constructors
      */
     RankTreeNode() : data(), key(), left(nullptr), right(nullptr),
-                     father(nullptr), hl(0), hr(0){};
+                     father(nullptr), hl(0), hr(0), w(1){};
     /**
      * creating new Node with the given data and key parameters
      * @param key
      * @param data
      */
     RankTreeNode(K key, D data) : data(data), key(key), left(nullptr),
-                                  right(nullptr), father(nullptr), hl(0), hr(0){};
+                                  right(nullptr), father(nullptr), hl(0), hr(0), w(1){};
     /**
      * no new memory is allocated so default destructor is fine
      */
@@ -90,6 +100,25 @@ template<class K, class D>
 int RankTreeNode<K, D>::getBf() {
     return (this->hl-this->hr);
 }
+
+template<class K, class D>
+int RankTreeNode<K, D>::getNumberOfSons(){
+    return this->w;
+}
+template<class K, class D>
+void RankTreeNode<K, D>::incNumberOfSons(){
+    this->w++;
+}
+template<class K, class D>
+void RankTreeNode<K, D>::decNumberOfSons(){
+    this->w--;
+}
+
+template<class K, class D>
+void RankTreeNode<K, D>::setNumberOfSons(int new_w){
+    this->w = new_w;
+}
+
 
 template<class K, class D>
 RankTreeNode<K,D>* RankTreeNode<K,D>::getLeft() {
