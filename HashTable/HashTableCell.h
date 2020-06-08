@@ -8,12 +8,13 @@
 template<typename D, typename K>
 class HashTableCell{
 private:
-    D* data;
-    K* key;
+    D data;
+    K key;
     bool isFree;
 
 public:
-    HashTableCell(K* key, D* data);
+    HashTableCell() = default;
+    HashTableCell(const K &key, const D &data);
     ~HashTableCell() = default; //todo
     K getKey() const;
     D getData() const;
@@ -26,27 +27,23 @@ public:
 
 template<typename D, typename K>
 HashTableCell<D, K>::
-HashTableCell(K *key, D *data) : key(key), data(data) {
+HashTableCell(const K &key, const D &data) : key(key), data(data) {
     isFree = false;
 }
 
 template<typename D, typename K>
 K HashTableCell<D, K>::getKey() const {
-    return *key;
+    return key;
 }
 
 template<typename D, typename K>
 D HashTableCell<D, K>::getData() const {
-    return *data;
+    return data;
 }
 
-template<typename D, typename K>
+template<typename D, typename K> //todo:
 void HashTableCell<D, K>::deleteCell() {
     isFree = true;
-    delete key;
-    key = nullptr;
-    delete data;
-    data = nullptr;
 }
 
 template<typename D, typename K>
