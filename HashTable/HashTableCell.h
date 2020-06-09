@@ -11,24 +11,35 @@ private:
     D data;
     K key;
     bool isFree;
+    bool wasOccupied;
 
 public:
-    HashTableCell() = default;
+    HashTableCell();
     HashTableCell(const K &key, const D &data);
     ~HashTableCell() = default; //todo
     K getKey() const;
     D getData() const;
     void setData(const D &new_data);
     bool isCellFree() const;
+    bool wasCellOccupied() const;
     void deleteCell();
 };
 
 //=================== PUBLIC ===================
 
 template<typename D, typename K>
+HashTableCell<D, K>::HashTableCell() {
+    data = D();
+    key = K();
+    isFree = true;
+    wasOccupied = false;
+}
+
+template<typename D, typename K>
 HashTableCell<D, K>::
 HashTableCell(const K &key, const D &data) : key(key), data(data) {
     isFree = false;
+    wasOccupied = true;
 }
 
 template<typename D, typename K>
@@ -52,9 +63,13 @@ bool HashTableCell<D, K>::isCellFree() const {
 }
 
 template<typename D, typename K>
+bool HashTableCell<D, K>::wasCellOccupied() const {
+    return wasOccupied;
+}
+
+template<typename D, typename K>
 void HashTableCell<D, K>::setData(const D &new_data) {
     data = new_data;
 }
-
 
 #endif //DATASTRUCTURE_2_HASHTABLECELL_H
