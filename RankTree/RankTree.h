@@ -151,6 +151,7 @@ public:
     template<typename Function, typename S>
     RankTreeResult doSomethingInOrder(Function doSomething, int &n, List<S>*lst);
 
+    //TODO: add comments to this functios
     int rank(K key);
 
     K select(int i);
