@@ -2,12 +2,6 @@
 // Created by Aviv9 on 27/04/2020.
 //
 
-/**
- * TODO: add rank function
- * TODO: add select function
- * TODO: test
- */
-
 
 
 #ifndef AVLTREE_AVLTREE_H
@@ -84,11 +78,6 @@ private:
     template<typename Function, typename S>
     RankTreeResult iterateAndDoInOrder(RankTreeNode<K, D> *node, Function
         doSomething, List<S>* lst , int &n);
-
-    int findRankReq(RankTreeNode<K,D>* curr, K key);
-
-    K selectReq(RankTreeNode<K,D>* curr, int rank);
-
 
     //TODO: delete when done testing
     template <class KEY,class DATA>
@@ -220,7 +209,7 @@ RankTreeResult RankTree<K,D>::insert(K& key, D& data){
     this->num_of_nodes++;
     RankTreeResult balance_result = NOT_BALANCED;
     RankTreeNode<K,D>* curr = new_node;
-    int son_key = curr->getKey();
+    K son_key = curr->getKey();
     //Checking the BF of each node in the route to the root, updating heights
     for(curr = new_node->getFather(); curr != nullptr ;curr=curr->getFather()){
         //checking in which direction we went up
@@ -397,7 +386,7 @@ RankTreeResult RankTree<K, D>::addNewNode(RankTreeNode<K,D>* new_node) {
         return RANK_TREE_SUCCESS;
     }
     while(curr!= nullptr){
-        int curr_key = curr->getKey();
+        K curr_key = curr->getKey();
         if(curr_key==key) {
             return RANK_TREE_KEY_ALREADY_EXISTS;
         }
@@ -458,7 +447,7 @@ RankTreeResult RankTree<K, D>::remove(const K &key) {
     }
     RankTreeNode<K,D>* curr = deleteNode(node_to_delete);
     this->num_of_nodes--;
-    int son_key;
+    K son_key;
     if(curr != nullptr){
         son_key = curr->getKey();
     }
