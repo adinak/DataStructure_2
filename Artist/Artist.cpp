@@ -65,6 +65,14 @@ ArtistResult Artist::artistAddToSongCount(int song_id, int count) {
     return SUCCESS;
 }
 
+int Artist::getNumOfSongs() {
+    return this->songs_id.getSize();
+}
+
+int Artist::getNumOfStreams(int song_id) {
+    return *this->songs_id.find(song_id);
+}
+
 
 
 

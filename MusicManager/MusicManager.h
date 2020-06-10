@@ -5,15 +5,17 @@
 #ifndef DATASTRUCTURE_2_MUSICMANAGER_H
 #define DATASTRUCTURE_2_MUSICMANAGER_H
 
-#include "SpecialKeys.h"
+#include "Artist.h"
 #include "../RankTree/RankTree.h"
 #include "../HashTable/HashTable.h"
 
-typedef enum {MM_SUCSSES, MM_FAIL, MM_INVALID_ARGUMENT} ;
+//TODO: change function return type to MMResult
+typedef enum {MM_SUCSSES, MM_FAIL, MM_INVALID_ARGUMENT}MusicManagerResult ;
 
 class MusicManager {
 private:
     RankTree<ArtistSongKey, int> big_songs_tree;
+    //TODO: add hash function
     HashTable<Artist, int, hashFunction> artists_table;
     int num_of_artists;
     int num_of_songs;
@@ -37,23 +39,32 @@ public:
      * @param artistID
      * @param numOfSongs
      */
-    void addArtist(int artistID);
+    MusicManagerResult addArtist(int artistID);
 
+    int getNumberOfSongs(int artistID);
     /**
      * Deletes artist from artists tree and deletes all of the artist songs
      * from the streaming chart
      * @param artistID
      */
-    void removeArtist(int artistID);
+    MusicManagerResult removeArtist(int artistID);
 
+
+    MusicManagerResult addSong(int artist_id, int song_id);
+
+    MusicManagerResult removeSong(int artist_id, int song_id);
     /**
      * Increases songID streams by:
      * - increasing number of streams in streams[songID]
      * - moving the song from current node in music chart to next node
-     * @param artistID
-     * @param songID
+     * @param artist_id
+     * @param song_id
      */
-    void addToSongCount(int artistID, int songID);
+    MusicManagerResult addToSongCount(int artist_id, int song_id);
+
+    int getArtistBestSong(int artist_id);
+
+    ArtistSongKey getRecommendedSongInPlace(int rank);
 };
 
 

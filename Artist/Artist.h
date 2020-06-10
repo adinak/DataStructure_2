@@ -26,8 +26,10 @@ public:
     int getArtistId() const;
     int getArtistBestSong() const;
     bool isSong(int song_id);
+    int getNumOfSongs();
     ArtistResult addSong(int song_id, int count = 0);
     ArtistResult deleteSong(int song_id);
+    int getNumOfStreams(int song_id);
     ArtistResult artistAddToSongCount(int song_id, int count);
 };
 

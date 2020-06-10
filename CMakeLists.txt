@@ -20,8 +20,8 @@ add_executable(DataStructure_2
         ${RANK_TREE}/RankTreeNode.h
         ${ARTIST}/Artist.h
         ${ARTIST}/Artist.cpp
-        # ${MUSIC_MANAGER}/MusicManager.cpp
-        # ${MUSIC_MANAGER}/MusicManager.h
+        ${MUSIC_MANAGER}/MusicManager.cpp
+        ${MUSIC_MANAGER}/MusicManager.h
         ${MUSIC_MANAGER}/SpecialKeys.cpp
         ${MUSIC_MANAGER}/SpecialKeys.h
         ${ARTIST}/TestArtist.cpp) # debug
