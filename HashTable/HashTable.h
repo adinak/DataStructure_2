@@ -118,6 +118,7 @@ bool HashTable<D, K, F>::isMember(const K &key) const {
     if (current.isCellFree()) {
         return false;
     }
+    //TODO:Aviv - what if the hash gets you to the last position and it is occupied?
     while(index < size && !current.isCellFree()) {
         if (current.getKey() == key) {
             return true;

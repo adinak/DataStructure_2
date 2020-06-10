@@ -70,7 +70,11 @@ int Artist::getNumOfSongs() {
 }
 
 int Artist::getNumOfStreams(int song_id) {
-    return *this->songs_id.find(song_id);
+    int* streams = this->songs_id.find(song_id);
+    if(streams == nullptr){
+        return -1;
+    }
+    return *streams;
 }
 
 

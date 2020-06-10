@@ -36,18 +36,18 @@ public:
     /**
      * Adds a new artist to the artists tree and adds all the artist songs to
      * the streaming chart
-     * @param artistID
+     * @param artist_id
      * @param numOfSongs
      */
-    MusicManagerResult addArtist(int artistID);
+    MusicManagerResult addArtist(int artist_id);
 
-    int getNumberOfSongs(int artistID);
+    int getNumberOfSongs(int artist_id);
     /**
      * Deletes artist from artists tree and deletes all of the artist songs
      * from the streaming chart
-     * @param artistID
+     * @param artist_id
      */
-    MusicManagerResult removeArtist(int artistID);
+    MusicManagerResult removeArtist(int artist_id);
 
 
     MusicManagerResult addSong(int artist_id, int song_id);
@@ -60,7 +60,7 @@ public:
      * @param artist_id
      * @param song_id
      */
-    MusicManagerResult addToSongCount(int artist_id, int song_id);
+    MusicManagerResult addToSongCount(int artist_id, int song_id, int count);
 
     int getArtistBestSong(int artist_id);
 
