@@ -10,6 +10,10 @@
 
 #define N 10 //starting size of array
 #define HASH 0.61803
+#define DOES_NOT_EXIST -1
+#define HALF 0.5
+#define QUARTER 0.25
+
 
 template<typename K>
 struct KeyHash{
@@ -75,14 +79,14 @@ void HashTable<D, K, F>::reduceTable() {
         if(!current_old.isCellFree()) {
             index = hashFunction(current_old.getKey());
             HashTableCell<D, K> current_new = temp_table[index];
-            while (index < (size / 2) && !current_new.isCellFree()) {
+            while (index < (size * HALF) && !current_new.isCellFree()) {
                 index++;
                 current_new = temp_table[index];
             }
             temp_table[index] = current_old;
         }
     }
-    size = size / 2;
+    size = size * HALF;
     delete [] table;
     table = temp_table;
 }
@@ -127,9 +131,9 @@ bool HashTable<D, K, F>::isMember(const K &key) const {
 template<typename D, typename K, typename F>
 int HashTable<D, K, F>::insertNewMember(const K &key, const D &data) {
     if (isMember(key)) {
-        return -1;
+        return DOES_NOT_EXIST;
     }
-    if(occupied >= size / 2) {
+    if(occupied >= size * HALF) {
         expandTable();
     }
     int index = hashFunction(key);
@@ -177,7 +181,7 @@ D HashTable<D, K, F>::deleteMember(const K &key) {
     data = current.getData();
     current.deleteCell();
     occupied--;
-    if (occupied < size / 4) {
+    if (occupied < size * QUARTER) {
         reduceTable();
     }
     return data;

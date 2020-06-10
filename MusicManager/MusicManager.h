@@ -5,7 +5,7 @@
 #ifndef DATASTRUCTURE_2_MUSICMANAGER_H
 #define DATASTRUCTURE_2_MUSICMANAGER_H
 
-#include "SpcialKeys.h"
+#include "SpecialKeys.h"
 #include "../RankTree/RankTree.h"
 #include "../HashTable/HashTable.h"
 
