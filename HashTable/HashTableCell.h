@@ -52,7 +52,7 @@ D HashTableCell<D, K>::getData() const {
     return data;
 }
 
-template<typename D, typename K> //todo:
+template<typename D, typename K>
 void HashTableCell<D, K>::deleteCell() {
     isFree = true;
 }
