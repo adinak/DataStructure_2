@@ -9,7 +9,6 @@
 #include "../RankTree/RankTree.h"
 #include "../HashTable/HashTable.h"
 
-//TODO: change function return type to MMResult
 typedef enum {MM_SUCSSES, MM_FAIL, MM_INVALID_ARGUMENT}MusicManagerResult ;
 
 class MusicManager {
@@ -27,7 +26,7 @@ public:
      * @return total number of songs in music manager
      */
     int getNumberOfSongs() const;
-
+    int getNumberOfSongs(int artist_id);
     /**
      * @return total number of artists in music manager
      */
@@ -41,7 +40,7 @@ public:
      */
     MusicManagerResult addArtist(int artist_id);
 
-    int getNumberOfSongs(int artist_id);
+
     /**
      * Deletes artist from artists tree and deletes all of the artist songs
      * from the streaming chart

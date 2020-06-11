@@ -62,6 +62,7 @@ MusicManagerResult MusicManager::removeSong(int artist_id, int song_id) {
     if(a.deleteSong(song_id)== SONG_DOES_NOT_EXIST)
         return MM_FAIL;
     ArtistSongKey tmp_key(artist_id,song_id, streams);
+    this->big_songs_tree.remove(tmp_key);
     this->num_of_songs--;
     return MM_SUCSSES;
 }

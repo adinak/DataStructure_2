@@ -151,9 +151,24 @@ public:
     template<typename Function, typename S>
     RankTreeResult doSomethingInOrder(Function doSomething, int &n, List<S>*lst);
 
-    //TODO: add comments to this functios
+    /**
+     * Given a key of an element in the tree the function return its position
+     * in the ordered series of all the tree elements when the smallest element
+     * is in position 1 and the biggest element is in position tree.size()
+     * @param key - the key of the element to search
+     * @return the position of the element in the ordered series
+     * @return -1 if an element with the given key doesnt exists in the tree
+     */
     int rank(K key);
-
+    /**
+     * finds the i element in the ordered series of all the tree elements and
+     * return its key, the user can get the element data by using find(K key)
+     * function on the returned key.
+     * @param i - the rank of the element to find (1 is the smallest, tree.size()
+     * is the biggest.
+     * @return the element found in the i' position in the ordered series
+     * @return default K value if i<=0 or i>tree.size
+     */
     K select(int i);
 
 
