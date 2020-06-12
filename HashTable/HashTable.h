@@ -123,8 +123,7 @@ bool HashTable<D, K, F>::isMember(const K &key) const {
             return true;
         }
         index++;
-        index = index % size;
-        current = table[index];
+        current = table[index % size];
     }
     return false;
 }

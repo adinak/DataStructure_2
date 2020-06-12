@@ -15,7 +15,7 @@ class MusicManager {
 private:
     RankTree<ArtistSongKey, int> big_songs_tree;
     //TODO: add hash function
-    HashTable<Artist, int, hashFunction> artists_table;
+    HashTable<Artist, int> artists_table;
     int num_of_artists;
     int num_of_songs;
 public:

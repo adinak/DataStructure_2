@@ -21,7 +21,8 @@ private:
     RankTree<SongKey , int> songs_streams;
 
 public:
-    explicit Artist(int id);
+    Artist(int id);
+    Artist() = default;
     ~Artist() = default;
     int getArtistId() const;
     int getArtistBestSong() const;
