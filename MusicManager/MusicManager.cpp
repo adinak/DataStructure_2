@@ -24,7 +24,7 @@ MusicManagerResult MusicManager::addArtist(int artist_id) {
         return MM_FAIL;
     }
     this->num_of_artists++;
-    return MM_SUCSSES;
+    return MM_SUCCESS;
 }
 
 MusicManagerResult MusicManager::removeArtist(int artist_id) {
@@ -34,7 +34,7 @@ MusicManagerResult MusicManager::removeArtist(int artist_id) {
        return MM_FAIL;
    Artist a = this->artists_table.deleteMember(artist_id);
    this->num_of_artists--;
-   return MM_SUCSSES;
+   return MM_SUCCESS;
 }
 
 int MusicManager::getNumberOfSongs(int artist_id) {
@@ -46,12 +46,13 @@ MusicManagerResult MusicManager::addSong(int artist_id, int song_id) {
     Artist a = this->artists_table.findMember(artist_id);
     if(!this->artists_table.isMember(artist_id))
         return MM_FAIL;
-    if(a.addSong(song_id)== SONG_ALREADY_EXISTS)
+    if(a.addSong(song_id) == A_SONG_ALREADY_EXISTS)
         return MM_FAIL;
+    a.addSong(song_id, 0);
     ArtistSongKey tmp_key(artist_id,song_id,0);
     this->big_songs_tree.insert(tmp_key,song_id);
     this->num_of_songs++;
-    return MM_SUCSSES;
+    return MM_SUCCESS;
 }
 
 MusicManagerResult MusicManager::removeSong(int artist_id, int song_id) {
@@ -59,12 +60,12 @@ MusicManagerResult MusicManager::removeSong(int artist_id, int song_id) {
         return MM_FAIL;
     Artist a = this->artists_table.findMember(artist_id);
     int streams = a.getNumOfStreams(song_id);
-    if(a.deleteSong(song_id)== SONG_DOES_NOT_EXIST)
+    if(a.deleteSong(song_id) == A_SONG_DOES_NOT_EXIST)
         return MM_FAIL;
     ArtistSongKey tmp_key(artist_id,song_id, streams);
     this->big_songs_tree.remove(tmp_key);
     this->num_of_songs--;
-    return MM_SUCSSES;
+    return MM_SUCCESS;
 }
 
 MusicManagerResult MusicManager::addToSongCount(int artist_id, int song_id, int count) {
@@ -79,7 +80,7 @@ MusicManagerResult MusicManager::addToSongCount(int artist_id, int song_id, int 
     this->big_songs_tree.remove(tmp_key);
     tmp_key = ArtistSongKey(artist_id,song_id,streams+count);
     this->big_songs_tree.insert(tmp_key, song_id);
-    return MM_SUCSSES;
+    return MM_SUCCESS;
 }
 
 int MusicManager::getArtistBestSong(int artist_id) {

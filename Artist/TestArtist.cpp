@@ -10,16 +10,16 @@ int main() {
     if (pink.getArtistId() == 555) {
         std::cout << "test1: success!" << std::endl;
     }
-    if (pink.addSong(56) == SUCCESS) {
+    if (pink.addSong(56) == A_SUCCESS) {
         std::cout << "test2: success!" << std::endl;
     }
-    if (pink.addSong(50) == SUCCESS) {
+    if (pink.addSong(50) == A_SUCCESS) {
         std::cout << "test3: success!" << std::endl;
     }
     if (pink.getArtistBestSong() == 50) {
         std::cout << "test4: success!" << std::endl;
     }
-    if (pink.artistAddToSongCount(56, 6) == SUCCESS) {
+    if (pink.artistAddToSongCount(56, 6) == A_SUCCESS) {
         std::cout << "test5: success!" << std::endl;
     }
     if (pink.getArtistBestSong() == 56) {
@@ -31,7 +31,7 @@ int main() {
     if (pink.isSong(50)) {
         std::cout << "test8: success!" << std::endl;
     }
-    if (pink.deleteSong(56) == SUCCESS) {
+    if (pink.deleteSong(56) == A_SUCCESS) {
         std::cout << "test9: success!" << std::endl;
     }
     if (pink.getArtistBestSong() == 50) {

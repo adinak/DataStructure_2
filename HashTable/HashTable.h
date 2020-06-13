@@ -6,7 +6,7 @@
 #define DATASTRUCTURE_2_HASHTABLE_H
 
 #include "HashTableCell.h"
-#include <cmath>
+//#include <cmath>
 
 #define N 10 //starting size of array
 #define HASH 0.61803
@@ -42,7 +42,7 @@ public:
     int getSize() const;
     bool isMember(const K &key) const;
     int insertNewMember(const K &key, const D &data);
-    D findMember(const K &key);
+    D& findMember(const K &key);
     D deleteMember(const K &key);
 
 };
@@ -149,7 +149,7 @@ int HashTable<D, K, F>::insertNewMember(const K &key, const D &data) {
 }
 
 template<typename D, typename K, typename F>
-D HashTable<D, K, F>::findMember(const K &key) {
+D& HashTable<D, K, F>::findMember(const K &key) {
     D data = D();
     if (!isMember(key)) {
         return data;

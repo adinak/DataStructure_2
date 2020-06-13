@@ -9,12 +9,11 @@
 #include "../RankTree/RankTree.h"
 #include "../HashTable/HashTable.h"
 
-typedef enum {MM_SUCSSES, MM_FAIL, MM_INVALID_ARGUMENT}MusicManagerResult ;
+typedef enum {MM_SUCCESS = -2, MM_FAIL = -3, MM_INVALID_ARGUMENT = -4}MusicManagerResult ;
 
 class MusicManager {
 private:
     RankTree<ArtistSongKey, int> big_songs_tree;
-    //TODO: add hash function
     HashTable<Artist, int> artists_table;
     int num_of_artists;
     int num_of_songs;

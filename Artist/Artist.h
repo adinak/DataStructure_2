@@ -9,7 +9,7 @@
 #include "RankTree.h"
 #include "SpecialKeys.h"
 
-typedef enum {SUCCESS , FAIL, SONG_ALREADY_EXISTS, SONG_DOES_NOT_EXIST}
+typedef enum {A_SUCCESS , A_FAIL, A_SONG_ALREADY_EXISTS, A_SONG_DOES_NOT_EXIST}
 ArtistResult;
 
 class Artist{
@@ -22,7 +22,7 @@ private:
 
 public:
     Artist(int id);
-    Artist() = default;
+    Artist();
     ~Artist() = default;
     int getArtistId() const;
     int getArtistBestSong() const;

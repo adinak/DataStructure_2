@@ -17,8 +17,8 @@ public:
     HashTableCell();
     HashTableCell(const K &key, const D &data);
     ~HashTableCell() = default; //todo
-    K getKey() const;
-    D getData() const;
+    K& getKey() ;
+    D& getData() ;
     void setData(const D &new_data);
     bool isCellFree() const;
     bool wasCellOccupied() const;
@@ -43,12 +43,12 @@ HashTableCell(const K &key, const D &data) : key(key), data(data) {
 }
 
 template<typename D, typename K>
-K HashTableCell<D, K>::getKey() const {
+K& HashTableCell<D, K>::getKey()  {
     return key;
 }
 
 template<typename D, typename K>
-D HashTableCell<D, K>::getData() const {
+D& HashTableCell<D, K>::getData()  {
     return data;
 }
 

@@ -5,9 +5,17 @@
 #include "Artist.h"
 
 
+
+
 Artist::Artist(int id) : artist_id(id) {
-    best_song_id = std::numeric_limits<int>::max();
-    best_song_streams = 0;
+    best_song_id = -1;
+    best_song_streams = -1;
+}
+
+Artist::Artist() {
+    artist_id = -1;
+    best_song_id = -1;
+    best_song_streams = -1;
 }
 
 int Artist::getArtistId() const {
@@ -24,9 +32,9 @@ bool Artist::isSong(int song_id) {
 
 ArtistResult Artist::addSong(int song_id, int count) {
     if (isSong(song_id)) {
-        return SONG_ALREADY_EXISTS;
+        return A_SONG_ALREADY_EXISTS;
     }
-    if (count > best_song_streams ||
+    if (best_song_id < 0 || count > best_song_streams ||
         (count == best_song_streams && song_id < best_song_id)) {
         best_song_id = song_id;
         best_song_streams = count;
@@ -36,12 +44,12 @@ ArtistResult Artist::addSong(int song_id, int count) {
     songs_id.insert(id, streams);
     SongKey key(id, streams);
     songs_streams.insert(key, id);
-    return SUCCESS;
+    return A_SUCCESS;
 }
 
 ArtistResult Artist::deleteSong(int song_id) {
     if (!isSong(song_id)) {
-        return SONG_DOES_NOT_EXIST;
+        return A_SONG_DOES_NOT_EXIST;
     }
     int streams = *(songs_id.find(song_id));
     songs_id.remove(song_id);
@@ -52,17 +60,17 @@ ArtistResult Artist::deleteSong(int song_id) {
         best_song_id = new_best.song_id;
         best_song_streams = new_best.num_of_streams;
     }
-    return SUCCESS;
+    return A_SUCCESS;
 }
 
 ArtistResult Artist::artistAddToSongCount(int song_id, int count) {
-    if (deleteSong(song_id) != SUCCESS) {
-        return FAIL;
+    if (deleteSong(song_id) != A_SUCCESS) {
+        return A_FAIL;
     }
-    if (addSong(song_id, count) != SUCCESS) {
-        return FAIL;
+    if (addSong(song_id, count) != A_SUCCESS) {
+        return A_FAIL;
     }
-    return SUCCESS;
+    return A_SUCCESS;
 }
 
 int Artist::getNumOfSongs() {
@@ -76,6 +84,8 @@ int Artist::getNumOfStreams(int song_id) {
     }
     return *streams;
 }
+
+
 
 
 
