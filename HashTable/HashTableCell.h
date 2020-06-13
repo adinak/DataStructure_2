@@ -19,7 +19,9 @@ public:
     ~HashTableCell() = default; //todo
     K& getKey() ;
     D& getData() ;
+    void setKey(const K &new_key) ;
     void setData(const D &new_data);
+    void set(const K &new_key, const D &new_data);
     bool isCellFree() const;
     bool wasCellOccupied() const;
     void deleteCell();
@@ -71,5 +73,19 @@ template<typename D, typename K>
 void HashTableCell<D, K>::setData(const D &new_data) {
     data = new_data;
 }
+
+template<typename D, typename K>
+void HashTableCell<D, K>::setKey(const K &new_key) {
+    key = new_key;
+}
+
+template<typename D, typename K>
+void HashTableCell<D, K>::set(const K &new_key, const D &new_data) {
+    setKey(new_key);
+    setData(new_data);
+    isFree = false;
+    wasOccupied = true;
+}
+
 
 #endif //DATASTRUCTURE_2_HASHTABLECELL_H

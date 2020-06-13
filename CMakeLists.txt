@@ -13,17 +13,15 @@ include_directories(${HASH_TABLE})
 include_directories(${MUSIC_MANAGER})
 
 add_executable(DataStructure_2
-        # ${HASH_TABLE}/TestHashTable.cpp # debug
-        #${ARTIST}/TestArtist.cpp
+        ${HASH_TABLE}/TestHashTable.cpp # debug
         ${HASH_TABLE}/HashTable.h
         ${HASH_TABLE}/HashTableCell.h
         ${RANK_TREE}/RankTree.h
         ${RANK_TREE}/RankTreeNode.h
         ${ARTIST}/Artist.h
         ${ARTIST}/Artist.cpp
-        ${MUSIC_MANAGER}/MusicManager.cpp
-        ${MUSIC_MANAGER}/MusicManager.h
+        #${MUSIC_MANAGER}/MusicManager.cpp
+        #${MUSIC_MANAGER}/MusicManager.h
         ${MUSIC_MANAGER}/SpecialKeys.cpp
-        ${MUSIC_MANAGER}/SpecialKeys.h
-        library2.cpp
-        main.cpp) # debug
+        ${MUSIC_MANAGER}/SpecialKeys.h)
+        #${ARTIST}/TestArtist.cpp) # debug

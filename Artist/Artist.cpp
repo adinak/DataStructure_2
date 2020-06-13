@@ -4,9 +4,6 @@
 
 #include "Artist.h"
 
-
-
-
 Artist::Artist(int id) : artist_id(id) {
     best_song_id = -1;
     best_song_streams = -1;
@@ -96,9 +93,6 @@ Artist::~Artist() {
     delete (this->songs_streams);
 }
 
-Artist &Artist::operator=(Artist artist) {
-    this->best_song_id
-}
 
 
 

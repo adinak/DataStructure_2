@@ -24,7 +24,6 @@ public:
     Artist(int id);
     Artist();
     ~Artist();
-    Artist& operator=(Artist artist);
     int getArtistId() const;
     int getArtistBestSong() const;
     bool isSong(int song_id);
