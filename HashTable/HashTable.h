@@ -138,12 +138,12 @@ int HashTable<D, K, F>::insertNewMember(const K &key, const D &data) {
     }
     int index = hashFunction(key);
     HashTableCell<D, K> current = table[index];
-    while(index < size && !current.isCellFree()) {
+    while(!current.isCellFree()) {
         index++;
-        current = table[index];
+        current = table[index % size];
     }
     current = HashTableCell<D, K>(key, data);
-    table[index] = current;
+    table[index % size] = current;
     occupied++;
     return index;
 }
@@ -156,12 +156,12 @@ D HashTable<D, K, F>::findMember(const K &key) {
     }
     int index = hashFunction(key);
     HashTableCell<D, K> current = table[index];
-    while (index < size && current.wasCellOccupied()) {
+    while (current.wasCellOccupied()) {
         if (current.getKey() == key) {
             return current.getData();
         }
         index++;
-        current = table[index];
+        current = table[index % size];
     }
     return data;
 }
