@@ -89,8 +89,12 @@ int Artist::getNumOfStreams(int song_id) {
 }
 
 Artist::~Artist() {
-    delete (this->songs_id);
-    delete (this->songs_streams);
+    if (this->songs_id->getSize() > 0) {
+        delete (this->songs_id);
+    }
+    if (this->songs_streams->getSize() > 0) {
+        delete (this->songs_streams);
+    }
 }
 
 
