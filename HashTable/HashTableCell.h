@@ -8,8 +8,8 @@
 template<typename D, typename K>
 class HashTableCell{
 private:
-    D data;
-    K key;
+    D& data;
+    K& key;
     bool isFree;
     bool wasOccupied;
 

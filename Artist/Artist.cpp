@@ -96,6 +96,10 @@ Artist::~Artist() {
     delete (this->songs_streams);
 }
 
+Artist &Artist::operator=(Artist artist) {
+    this->best_song_id
+}
+
 
 
 
