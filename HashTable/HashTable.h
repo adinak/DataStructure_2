@@ -43,7 +43,7 @@ public:
     bool isMember(const K &key) const;
     int insertNewMember(const K &key, const D &data);
     D& findMember(const K &key);
-    D deleteMember(const K &key);
+    D& deleteMember(const K &key);
 
 };
 
@@ -167,7 +167,7 @@ D& HashTable<D, K, F>::findMember(const K &key) {
 }
 
 template<typename D, typename K, typename F>
-D HashTable<D, K, F>::deleteMember(const K &key) {
+D& HashTable<D, K, F>::deleteMember(const K &key) {
     D data = D();
     if (!isMember(key)) {
         return data;

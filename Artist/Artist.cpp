@@ -10,12 +10,16 @@
 Artist::Artist(int id) : artist_id(id) {
     best_song_id = -1;
     best_song_streams = -1;
+    this->songs_id = new RankTree<int,int>();
+    this->songs_streams = new RankTree<SongKey,int>();
 }
 
 Artist::Artist() {
     artist_id = -1;
     best_song_id = -1;
     best_song_streams = -1;
+    this->songs_id = new RankTree<int,int>();
+    this->songs_streams = new RankTree<SongKey,int>();
 }
 
 int Artist::getArtistId() const {
@@ -27,7 +31,9 @@ int Artist::getArtistBestSong() const {
 }
 
 bool Artist::isSong(int song_id) {
-    return songs_id.find(song_id) != nullptr;
+    if(this->songs_id->getSize() == 0)
+        return false;
+    return (this->songs_id->find(song_id) != nullptr);
 }
 
 ArtistResult Artist::addSong(int song_id, int count) {
@@ -41,9 +47,9 @@ ArtistResult Artist::addSong(int song_id, int count) {
     }
     int id = song_id;
     int streams = count;
-    songs_id.insert(id, streams);
+    songs_id->insert(id, streams);
     SongKey key(id, streams);
-    songs_streams.insert(key, id);
+    songs_streams->insert(key, id);
     return A_SUCCESS;
 }
 
@@ -51,12 +57,12 @@ ArtistResult Artist::deleteSong(int song_id) {
     if (!isSong(song_id)) {
         return A_SONG_DOES_NOT_EXIST;
     }
-    int streams = *(songs_id.find(song_id));
-    songs_id.remove(song_id);
+    int streams = *(songs_id->find(song_id));
+    songs_id->remove(song_id);
     SongKey key(song_id, streams);
-    songs_streams.remove(key);
+    songs_streams->remove(key);
     if (best_song_id == song_id) {
-        SongKey new_best = songs_streams.select(songs_streams.getSize());
+        SongKey new_best = songs_streams->select(songs_streams->getSize());
         best_song_id = new_best.song_id;
         best_song_streams = new_best.num_of_streams;
     }
@@ -74,15 +80,20 @@ ArtistResult Artist::artistAddToSongCount(int song_id, int count) {
 }
 
 int Artist::getNumOfSongs() {
-    return this->songs_id.getSize();
+    return this->songs_id->getSize();
 }
 
 int Artist::getNumOfStreams(int song_id) {
-    int* streams = this->songs_id.find(song_id);
+    int* streams = this->songs_id->find(song_id);
     if(streams == nullptr){
         return -1;
     }
     return *streams;
+}
+
+Artist::~Artist() {
+    delete (this->songs_id);
+    delete (this->songs_streams);
 }
 
 

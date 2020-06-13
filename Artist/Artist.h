@@ -17,13 +17,14 @@ private:
     int artist_id;
     int best_song_id;
     int best_song_streams;
-    RankTree<int, int> songs_id;
-    RankTree<SongKey , int> songs_streams;
+    RankTree<int, int>* songs_id;
+    RankTree<SongKey , int>* songs_streams;
 
 public:
     Artist(int id);
     Artist();
-    ~Artist() = default;
+    ~Artist();
+
     int getArtistId() const;
     int getArtistBestSong() const;
     bool isSong(int song_id);
