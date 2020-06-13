@@ -1,16 +1,28 @@
 #include <iostream>
 #include "HashTable.h"
+#include "Artist.h"
+
+void test1();
+void test2();
 
 int main() {
+    test1();
+    test2();
 
+    return 0;
+}
+
+
+void test1() {
+    std::cout << "@@@@@@@@@@@@@@@@   TEST 1  @@@@@@@@@@@@@@@@@@@" << std::endl;
     HashTable<int, int> my_hash;
     std::cout << "size: " << my_hash.getSize() << std::endl;
     int data1 = my_hash.insertNewMember(456, 12);
     int data2 = my_hash.insertNewMember(455, 13);
 
-    if (data1 == 12 && data2 == 13) {
+    /*if (data1 == 12 && data2 == 13) {
         std::cout << "test1: success!" << std::endl;
-    }
+    }*/
 
     bool contains = my_hash.isMember(456);
     if (contains) {
@@ -67,6 +79,20 @@ int main() {
         std::cout << "occupied: " << my_hash.getOccupied() << std::endl;
         std::cout << j << std::endl;
     }
+}
 
-    return 0;
+void test2() {
+    std::cout << "@@@@@@@@@@@@@@@@   TEST 2  @@@@@@@@@@@@@@@@@@@" << std::endl;
+    int index;
+    HashTable<Artist, int> hash;
+    for (int i = 0; i < 10; ++i) {
+        Artist artist(i);
+        index = hash.insertNewMember(i, artist);
+        std::cout << i << " in: " << index << std::endl;
+        std::cout << "size: " << hash.getSize() << std::endl;
+        std::cout << "occupied: " << hash.getOccupied() << std::endl;
+
+    }
+
+
 }
