@@ -6,8 +6,8 @@
 #define DATASTRUCTURE_2_MUSICMANAGER_H
 
 #include "Artist.h"
-#include "../RankTree/RankTree.h"
-#include "../HashTable/HashTable.h"
+#include "RankTree.h"
+#include "HashTable.h"
 
 typedef enum {MM_SUCCESS = -2, MM_FAIL = -3, MM_INVALID_ARGUMENT = -4}MusicManagerResult ;
 

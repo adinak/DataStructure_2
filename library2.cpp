@@ -3,7 +3,7 @@
 //
 
 #include "library2.h"
-#include "MusicManager/MusicManager.h"
+#include "MusicManager.h"
 using std::bad_alloc;
 
 void *Init() {
