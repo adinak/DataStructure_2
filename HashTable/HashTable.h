@@ -6,6 +6,7 @@
 #define DATASTRUCTURE_2_HASHTABLE_H
 
 #include "HashTableCell.h"
+#include "list.h"
 #include <cmath>
 
 #define N 10 //starting size of array
@@ -35,13 +36,14 @@ private:
 public:
     HashTable();
     ~HashTable();
-
     int getSize() const;
     int getOccupied() const;
     bool isMember(const K &key) const;
     int insertNewMember(const K &key, const D &data);
     D& findMember(const K &key);
     D deleteMember(const K &key);
+    List<D>* toList();
+
 
 };
 
@@ -184,6 +186,20 @@ D HashTable<D, K, F>::deleteMember(const K &key) {
         reduceTable();
     }
     return data;
+}
+
+template<typename D, typename K, typename F>
+List<D> *HashTable<D, K, F>::toList() {
+     auto lst = new List<D>();
+    HashTableCell<D,K>* cur;
+    for(int i=0; i<size; i++ ){
+        //TODO: verify that the type is correct
+        cur = &table[i];
+        if(!cur->isCellFree()){
+            lst->pushLast(cur->getData());
+        }
+    }
+    return lst;
 }
 
 #endif //DATASTRUCTURE_2_HASHTABLE_H
