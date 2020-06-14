@@ -10,9 +10,13 @@
 #include <cmath>
 
 #define N 10 //starting size of array
-#define HASH 0.61803
+#define HASH 0.61803 //Hashing const used in the default Hash Function
 #define DOES_NOT_EXIST -1
 
+/***
+ * default universal Hash Function
+ * @tparam K - the type of the keys
+ */
 template<typename K>
 struct KeyHash{
     int operator()(K key) const {
@@ -22,26 +26,93 @@ struct KeyHash{
         return index;
     }
 };
-
+/***
+ * Hash Table with custom Hash Function
+ * @tparam D - Type of data
+ * @tparam K - Type of keys
+ * @tparam F - optional: custom Hash Function
+ */
 template<typename D, typename K, typename F = KeyHash<K>>
 class HashTable{
 private:
+    //array of HashTableCells to store the data
     HashTableCell<D, K>* table;
+    //Hash Function variable
     F hashFunction;
+    //the size of the data array
     int size;
+    //number of cells in use in the data array
     int occupied;
+
+    /**
+     * increase the data array size by 2 when the array is 0.8 full.
+     * the function can occur only when adding new element.
+     */
     void expandTable();
+
+    /**
+     * decrease the data array size by 2 when the array is 0.25 full.
+     * the function can occur only when deleting an element.
+     */
     void reduceTable();
 
 public:
+    /**
+     * default constructor, initialize new HashTable with the starting size
+     */
     HashTable();
+
+    /**
+     * default destructor, free the data array allocated memory.
+     */
     ~HashTable();
+
+    /**
+     * @return the size of the data array
+     */
     int getSize() const;
+
+    /**
+     * @return the number of cells in use in the array
+     */
     int getOccupied() const;
+
+    /**
+     * @param key
+     * @return true if an element with the given key exists in the data array
+     *         false otherwise
+     */
     bool isMember(const K &key) const;
+
+    /**
+     * Add new element with the given parameters to the data array
+     * @param key
+     * @param data
+     * @return the index location of the new element.
+     *         -1 if an element with the same key exists in the data array
+     */
     int insertNewMember(const K &key, const D &data);
+
+    /**
+     * find the element with the given key
+     * @param key - key to search
+     * @return the data corresponding to the key given
+     */
     D findMember(const K &key);
+
+    /**
+     * delete an element from the data array
+     * @param key - key to delete
+     * @return the data of the element to delete (in case the user need to
+     *         deallocate the data from the memory.
+     *         default data element in case the key is not found
+     */
     D deleteMember(const K &key);
+
+    /**
+     * Allocate new list that contain the element from the data array
+     * @return pointer to the new list
+     */
     List<D>* toList();
 
 

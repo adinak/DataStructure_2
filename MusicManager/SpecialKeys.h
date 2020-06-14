@@ -5,7 +5,10 @@
 #ifndef DATASTRUCTURE_2_SPECIALKEYS_H
 #define DATASTRUCTURE_2_SPECIALKEYS_H
 
-
+/**
+ * Song key that used to sort song according to num of streams
+ * and then according to their songID
+ */
 typedef struct songKey_t{
     int song_id;
     int num_of_streams;
@@ -21,6 +24,11 @@ typedef struct songKey_t{
     bool operator!=(songKey_t song_key)const ;
 } SongKey;
 
+/**
+ * Artist Song key that used to sort song according to num of streams
+ * and then according to their artistID and then according to their
+ * songID
+ */
 typedef struct artistSongKey_t{
     int artist_id;
     int song_id;
