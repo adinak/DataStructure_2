@@ -25,4 +25,6 @@ add_executable(DataStructure_2
         ${MUSIC_MANAGER}/MusicManager.h
         ${MUSIC_MANAGER}/SpecialKeys.cpp
         ${MUSIC_MANAGER}/SpecialKeys.h
+        library2.h
+        library2.cpp
         main2.cpp)

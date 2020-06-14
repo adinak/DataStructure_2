@@ -54,7 +54,7 @@ bool artistSongKey_t::operator<(const artistSongKey_t artist_song_key) const {
         if(this->artist_id > artist_song_key.artist_id)
             return true;
         else if(this->artist_id == artist_song_key.artist_id){
-            if (this->song_id > artist_song_key.artist_id)
+            if (this->song_id > artist_song_key.song_id)
                 return true;
         }
     }

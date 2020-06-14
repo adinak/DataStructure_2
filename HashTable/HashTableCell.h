@@ -16,7 +16,7 @@ private:
 public:
     HashTableCell();
     HashTableCell(const K &key, const D &data);
-    ~HashTableCell() = default; //todo
+    ~HashTableCell() = default;
     K& getKey() ;
     D& getData() ;
     void setKey(const K &new_key) ;

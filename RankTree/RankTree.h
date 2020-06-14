@@ -78,10 +78,6 @@ private:
     template<typename Function, typename S>
     RankTreeResult iterateAndDoInOrder(RankTreeNode<K, D> *node, Function
         doSomething, List<S>* lst , int &n);
-
-    //TODO: delete when done testing
-    template <class KEY,class DATA>
-    friend class RankTree;
 public:
     // C'tors and D'tors
     RankTree();

@@ -80,7 +80,7 @@ StatusType RemoveSong(void *DS, int artistID, int songID) {
 }
 
 StatusType AddToSongCount(void *DS, int artistID, int songID, int count) {
-    if(DS == nullptr || artistID <= 0 || songID < 0 || count <= 0) {
+    if(DS == nullptr || artistID <= 0 || songID <= 0 || count <= 0) {
         return INVALID_INPUT;
     }
     auto* music_manager = (MusicManager*)DS;

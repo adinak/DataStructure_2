@@ -30,6 +30,7 @@ int MusicManager::getNumberOfArtists() const {
 MusicManagerResult MusicManager::addArtist(int artist_id) {
     auto a = new Artist(artist_id);
     if(this->artists_table.insertNewMember(artist_id, a) == -1){
+        delete a;
         return MM_FAIL;
     }
     this->num_of_artists++;
@@ -49,6 +50,7 @@ MusicManagerResult MusicManager::removeArtist(int artist_id) {
 
 int MusicManager::getNumberOfSongs(int artist_id) {
     Artist* a = this->artists_table.findMember(artist_id);
+    if(a == nullptr) return -1;
     return a->getNumOfSongs();
 }
 
@@ -103,7 +105,7 @@ int MusicManager::getArtistBestSong(int artist_id) {
 
 ArtistSongKey MusicManager::getRecommendedSongInPlace(int rank) {
     int total_num_of_songs = this->big_songs_tree.getSize();
-    int new_rank = total_num_of_songs-rank+1;
+    int new_rank = total_num_of_songs - rank + 1;
     return this->big_songs_tree.select(new_rank);
 }
 

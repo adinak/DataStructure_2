@@ -40,7 +40,7 @@ public:
     int getOccupied() const;
     bool isMember(const K &key) const;
     int insertNewMember(const K &key, const D &data);
-    D& findMember(const K &key);
+    D findMember(const K &key);
     D deleteMember(const K &key);
     List<D>* toList();
 
@@ -121,7 +121,7 @@ bool HashTable<D, K, F>::isMember(const K &key) const {
         return false;
     }
     while(current->wasCellOccupied()) {
-        if (current->getKey() == key) {
+        if ((!current->isCellFree()) && (current->getKey() == key)) {
             return true;
         }
         index++;
@@ -135,7 +135,7 @@ int HashTable<D, K, F>::insertNewMember(const K &key, const D &data) {
     if (isMember(key)) {
         return DOES_NOT_EXIST;
     }
-    if(occupied >= (size / 2)) {
+    if(occupied >= (size*0.8)) {
         expandTable();
     }
     int index = hashFunction(key);
@@ -150,7 +150,7 @@ int HashTable<D, K, F>::insertNewMember(const K &key, const D &data) {
 }
 
 template<typename D, typename K, typename F>
-D& HashTable<D, K, F>::findMember(const K &key) {
+D HashTable<D, K, F>::findMember(const K &key) {
     D data = D();
     if (!isMember(key)) {
         return data;
@@ -193,7 +193,6 @@ List<D> *HashTable<D, K, F>::toList() {
      auto lst = new List<D>();
     HashTableCell<D,K>* cur;
     for(int i=0; i<size; i++ ){
-        //TODO: verify that the type is correct
         cur = &table[i];
         if(!cur->isCellFree()){
             lst->pushLast(cur->getData());

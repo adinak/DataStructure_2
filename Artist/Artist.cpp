@@ -19,6 +19,11 @@ Artist::Artist() {
     this->songs_streams = new RankTree<SongKey,int>();
 }
 
+Artist::~Artist() {
+   delete (this->songs_id);
+   delete (this->songs_streams);
+}
+
 int Artist::getArtistId() const {
     return artist_id;
 }
@@ -88,14 +93,7 @@ int Artist::getNumOfStreams(int song_id) {
     return *streams;
 }
 
-Artist::~Artist() {
-    if (this->songs_id->getSize() > 0) {
-        delete (this->songs_id);
-    }
-    if (this->songs_streams->getSize() > 0) {
-        delete (this->songs_streams);
-    }
-}
+
 
 
 
